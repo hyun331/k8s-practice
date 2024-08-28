@@ -1,0 +1,16 @@
+apiVersion: v1
+#자원의 종류를 명시
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: hyun
+  # labels는 service의 라우팅 대상이 되는 이름
+  # service의 selector.app을 통해 매핑
+  labels:
+    app: my-nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports: 
+       - containerPort: 80
