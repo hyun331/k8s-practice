@@ -13,6 +13,7 @@ COPY build.gradle .
 COPY settings.gradle .
 
 #docker container 안에서 bootJar 명령어 .jar파일 생성
+RUN chmod 777 gradlew
 RUN ./gradlew bootJar
 
 #두번째 스테이지
