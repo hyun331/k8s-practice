@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod1
+  namespace: hyun
+  labels:
+    app: my-nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports: 
+      - containerPort: 80
+---
+# 한 파일 내에서 다른 파일인것처럼 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod2
+  namespace: hyun
+  labels:
+    app: my-nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports: 
+      - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: hyun
+spec:
+  type: NodePort
+  selector:
+  # my-nginx라는 label app을 가진 pod에 라우팅하겠다
+    app: my-nginx
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30304
+
+

@@ -1,0 +1,26 @@
+# ingress 는 nginx로 만들었음
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ordersystem-ingress
+  namespace: hyun
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+  - hosts:
+    - "server.seunghyun.shop"
+    secretName: seunghyun-com-tls
+  rules:
+  - host: server.seunghyun.shop
+    http:
+      paths:
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: ordersystem-service
+            # ingress는 서비스로 보냄. 서비스는 80포트임
+            port:
+              number: 80

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-replicaset
+  namespace: hyun
+spec:
+  replicas: 2
+  # 아래의 요소는 replicaset이 관리할 pod를 선택하기 위한 이름
+  # template.metadata.labels의 이름과 일치해야함
+  selector:
+    matchLabels:
+      app: my-nginx
+  template:
+  # 아래의 labels:app부분은 selector부분과 일치해야하고 위의 metadata.matchLabels와 일치해야함
+    metadata:
+      labels:
+        app: my-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: hyun
+spec:
+  type: NodePort
+  selector:
+  # my-nginx라는 label app을 가진 pod에 라우팅하겠다
+    app: my-nginx
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30304
+

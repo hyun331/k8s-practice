@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: hyun
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-nginx
+  template:
+    metadata:
+      labels:
+        app: my-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: hyun
+spec:
+# ingress를 적용하기 위해 clusterIp로 변경
+  type: ClusterIP
+  selector:
+    app: my-nginx
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+
+---
+#ingress controller 설치는 별도로 필요함
+#ingress controller도 nginx 기반으로 구성되어있음
+#ingress-controller를 설치시에 alb가 생성되고 ingress 자원과 함께 서비스 라우팅 수행
+#ingress controller한개에서 여러개의 ingress로 라우팅
+#kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/aws/deploy.yaml
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-nginx-ingress
+  namespace: hyun
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1 #첫번째 prefix 제거 후 endpoint 전달
+# ingress 자원에 대한 스펙
+spec:
+  rules:
+  - host: server.seunghyun.shop
+    http:
+      paths:
+      # 아래 path로 들어오면 백엔드로 넘길거다. ..????
+      - path: /product-service/(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service
+            port:
+              number: 80
+
+      - path: /order-service/(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service
+            port:
+              number: 80
+
