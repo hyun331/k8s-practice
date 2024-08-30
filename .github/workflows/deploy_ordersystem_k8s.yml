@@ -28,3 +28,18 @@ jobs:
       
       - name: update cluster information
         run: aws eks update-kubeconfig  --name 3team-cluster --region ap-northeast-2
+
+      - name: login ecr
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: build and push docker image to ecr
+        env: 
+          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
+          REPOSITORY: seunghyun-ordersystem
+        run: |
+          docker build -t $REGISTRY/REPOSITORY:latest \
+           -f ./order_system/Dockerfile ./order_system \
+          docker push $REGISTRY/REPOSITORY:latest 
+
+          
