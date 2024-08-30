@@ -30,42 +30,42 @@ spec:
 
           env:
           - name: REDIS_HOST
-            valueForm:
+            valueFrom:
               secretKeyRef:
                 key: REDIS_HOST
                 name: seunghyun-app-secrets
           - name: DB_HOST
-            valueForm:
+            valueFrom:
               secretKeyRef:
                 key: DB_HOST
                 name: seunghyun-app-secrets
           - name: DB_USERNAME
-            valueForm:
+            valueFrom:
               secretKeyRef:
                 key: DB_USERNAME
                 name: seunghyun-app-secrets
           - name: DB_PASSWORD
-            valueForm:
+            valueFrom:
               secretKeyRef:
                 key: DB_PASSWORD
                 name: seunghyun-app-secrets
           - name: JWT_SECRET
-            valueForm:
+            valueFrom:
               secretKeyRef:
                 key: JWT_SECRET
                 name: seunghyun-app-secrets
           - name: JWT_SECRET_RT
-            valueForm:
+            valueFrom:
               secretKeyRef:
                 key: JWT_SECRET_RT
                 name: seunghyun-app-secrets
           - name: AWS_ACCESS_KEY
-            valueForm:
+            valueFrom:
               secretKeyRef:
                 key: AWS_ACCESS_KEY
                 name: seunghyun-app-secrets
           - name: AWS_SECRET_KEY
-            valueForm:
+            valueFrom:
               secretKeyRef:
                 key: AWS_SECRET_KEY
                 name: seunghyun-app-secrets
