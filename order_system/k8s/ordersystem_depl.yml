@@ -23,7 +23,7 @@ spec:
           # 최대 자원 할당량
             limits:
               cpu: "0.5"
-              memory: "250Mi"
+              memory: "512Mi"
             requests:
               cpu: "0.5"
               memory: "250Mi"
