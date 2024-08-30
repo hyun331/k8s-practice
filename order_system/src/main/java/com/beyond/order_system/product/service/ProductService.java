@@ -53,15 +53,15 @@ public class ProductService {
         try{
             product = productRepository.save(productSaveRepDto.toEntity());
             //상품을 등록하면 redis에도 등록해주면 됨
-            if(productSaveRepDto.getName().contains("sale")){
-                stockInventoryService.increaseStock(product.getId(), product.getStockQuantity());
-            }
+         
             //이미지 파일 저장시 byte로
             byte[] bytes = image.getBytes();
             //랜덤 이름으로 저장됨
 //            Path path = Paths.get("C:/Users/신승현/Desktop/tmp/", product.getId()+"_"+image.getOriginalFilename());
-            Path path = Paths.get("C:/Users/Playdata/Desktop/tmp/", product.getId()+"_"+image.getOriginalFilename());
-            Files.write(path, bytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+            String fileName = product.getId()+ "_" + image.getOriginalFilename();
+
+            Path path = Paths.get("/tmp/", fileName);
+            Files.write(path, bytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE); 
             product.updateImagePath(path.toString());   //더티체크를 통해 변경감지함 -> 다시 save하지 않아도 됨.
         }catch (IOException e){
             throw new RuntimeException("이미지 저장 실패");
