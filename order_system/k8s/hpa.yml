@@ -1,0 +1,30 @@
+# 매트릭 서버(pod의 자원상황 모니터링 툴 - 수동 설치) 설치
+# kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# Horizontal Pod Autoscaler - scale 확장
+# 컨테이너 자동 확장
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ordersystem-hpa
+  namespace: hyun
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    # ordersystem_depl의 name
+    name: ordersystem-deployment
+  minReplicas: 1
+  maxReplicas: 3
+  # cpu 사용률이 50이상이면 pod 자동 증가시킴
+  targetCPUUtilizationPercentage: 50
+
+# 부하 테스트 - pod안에 들어가서 리눅스 스크립트를 통해 서비스에 부하를 줌. 
+# kubectl exec -it 파드명 /bin/bash -n hyun
+# while true; do curl -s http://ordersystem-service/product/list; done
+
+
+# 부하 모니터링
+# -w : watch옵션을 의미
+# kubectl get hpa ordersystem-hpa -n hyun -w
+
