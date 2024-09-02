@@ -37,7 +37,7 @@ jwt:
   secretKeyRt: ${JWT_SECRET_RT}
 
 
-#aws s3 설정
+#aws s3 설정 - 이건 내계정
 cloud:
   aws:
     credentials:

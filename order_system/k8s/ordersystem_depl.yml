@@ -69,3 +69,19 @@ spec:
               secretKeyRef:
                 key: AWS_SECRET_KEY
                 name: seunghyun-app-secrets
+          
+          # 무중단 배포를 위한 컨테이너 health check
+          readinessProbe:
+            httpGet:
+              path: /product/list
+              port: 8080
+              # 컨테이너 시작 후 지연시간 설정
+              initialDelaySeconds: 10
+              # 확인 반복 주기
+              preriodSeconds: 10
+              # 요청 타임아웃 설정 - 1초 이내에 안오면 실패
+              timeoutSeconds: 1
+              # 성공 인식 횟수 설정 - 몇번 성공해야 성공하는지
+              successThreshold: 1
+              # 연속 실패 횟수 . 연속적으로 5번 실패하면 건강하지 않은 상태로 판단하여 기존 서버 종료시키지 않음
+              failureThreshold: 5
