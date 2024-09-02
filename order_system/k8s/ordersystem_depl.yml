@@ -78,7 +78,7 @@ spec:
               # 컨테이너 시작 후 지연시간 설정
             initialDelaySeconds: 10
               # 확인 반복 주기
-            preriodSeconds: 10
+            periodSeconds: 10
               # 요청 타임아웃 설정 - 1초 이내에 안오면 실패
             timeoutSeconds: 1
               # 성공 인식 횟수 설정 - 몇번 성공해야 성공하는지
