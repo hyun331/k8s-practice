@@ -63,7 +63,7 @@ jobs:
           kubectl rollout restart deployment order-deployment -n hyun
 
       ################################
-      - name: build and push docker product image to ecr
+      - name: build and push docker product product image to ecr
         env: 
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
           REPOSITORY: seunghyun-product
