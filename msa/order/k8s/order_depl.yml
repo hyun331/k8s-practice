@@ -7,7 +7,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: order-deploymentm
+      app: order-deployment
   template:
     metadata:
       labels:
