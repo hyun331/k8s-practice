@@ -33,18 +33,48 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: build and push docker image to ecr
+      - name: build and push docker member image to ecr
         env: 
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
-          REPOSITORY: seunghyun-ordersystem
+          REPOSITORY: seunghyun-member
         run: |
           docker build -t $REGISTRY/$REPOSITORY:latest \
-           -f ./order_system/Dockerfile ./order_system 
+           -f ./msa/member/Dockerfile ./msa/member
           docker push $REGISTRY/$REPOSITORY:latest 
 
       - name: eks kubectl apply
         run: |
-          kubectl apply -f ./order_system/k8s/ordersystem_depl.yml
-          kubectl rollout restart deployment ordersystem-deployment -n hyun
+          kubectl apply -f ./msa/member/k8s/member_depl.yml
+          kubectl rollout restart deployment member-deployment -n hyun
 
+      #####################
+      - name: build and push docker order image to ecr
+        env: 
+          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
+          REPOSITORY: seunghyun-order
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:latest \
+           -f ./msa/order/Dockerfile ./msa/order
+          docker push $REGISTRY/$REPOSITORY:latest 
+
+      - name: eks kubectl apply
+        run: |
+          kubectl apply -f ./msa/order/k8s/order_depl.yml
+          kubectl rollout restart deployment order-deployment -n hyun
+
+      ################################
+      - name: build and push docker product image to ecr
+        env: 
+          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
+          REPOSITORY: seunghyun-product
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:latest \
+           -f ./msa/product/Dockerfile ./msa/product
+          docker push $REGISTRY/$REPOSITORY:latest 
+
+      - name: eks kubectl apply
+        run: |
+          kubectl apply -f ./msa/product/k8s/product_depl.yml
+          kubectl rollout restart deployment product-deployment -n hyun
+ 
 
