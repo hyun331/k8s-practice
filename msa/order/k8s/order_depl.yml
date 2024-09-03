@@ -7,14 +7,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: order-deployment
+      app: order
   template:
     metadata:
       labels:
-        app: order-deployment
+        app: order
     spec:
       containers:
-        - name: ordersystem
+        - name: order
         # aws ecr주소 사용하기. ecr : 이미지 레파지토리
           image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/seunghyun-order:latest
           ports:
